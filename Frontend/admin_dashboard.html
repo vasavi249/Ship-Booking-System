@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Ship Booking System</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-nav { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #eee; padding-bottom: 1rem; }
+        .admin-nav button { background: none; border: none; font-size: 1.1rem; font-weight: 600; color: var(--secondary); cursor: pointer; padding: 0.5rem 1rem; }
+        .admin-nav button.active { border-bottom: 3px solid var(--primary); color: var(--primary); }
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">🚢 ShipBooker Admin</a>
+        <ul class="nav-links">
+            <li><a href="index.html">View Site</a></li>
+        </ul>
+    </nav>
+
+    <section style="padding: 2rem 5%;">
+        <div class="glass-container glass-container-large" style="max-width: 1200px;">
+            <div class="admin-nav">
+                <button class="active" onclick="showSection('passengers')">Passengers</button>
+                <button onclick="showSection('ships')">Ships</button>
+                <button onclick="showSection('schedules')">Schedules</button>
+                <button onclick="showSection('bookings')">Bookings</button>
+                <button onclick="showSection('payments')">Payments</button>
+            </div>
+
+            <!-- Passengers Section -->
+            <div id="passengers" class="admin-section active">
+                <h3>Manage Passengers</h3>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Nationality</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-passengers"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Ships Section -->
+            <div id="ships" class="admin-section">
+                <h3>Manage Ships</h3>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Capacity</th>
+                                <th>Operator</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-ships"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Schedules Section -->
+            <div id="schedules" class="admin-section">
+                <h3>Manage Schedules</h3>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ship</th>
+                                <th>Route</th>
+                                <th>Departure</th>
+                                <th>Fare</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-schedules"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Bookings Section -->
+            <div id="bookings" class="admin-section">
+                <h3>Manage Bookings</h3>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Passenger</th>
+                                <th>Ship</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-bookings"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Payments Section -->
+            <div id="payments" class="admin-section">
+                <h3>Manage Payments</h3>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Booking ID</th>
+                                <th>Passenger</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                                <th>Txn ID</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-payments"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="margin-top: auto;">
+        <p>&copy; 2026 Ship Booking System. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function showSection(id) {
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.admin-nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+            loadData(id);
+        }
+
+        async function loadData(section) {
+            const data = await fetchAny(section);
+            const tbody = document.getElementById(`admin-${section}`);
+            
+            if(section === 'passengers') {
+                tbody.innerHTML = data.map(d => `
+                    <tr>
+                        <td>${d.passenger_id}</td>
+                        <td>${d.full_name}</td>
+                        <td>${d.email}</td>
+                        <td>${d.phone}</td>
+                        <td>${d.nationality}</td>
+                        <td><button onclick="deleteRecord('passengers', ${d.passenger_id})" class="btn-danger">Delete</button></td>
+                    </tr>
+                `).join('');
+            } else if(section === 'ships') {
+                tbody.innerHTML = data.map(d => `
+                    <tr>
+                        <td>${d.ship_id}</td>
+                        <td>${d.ship_name}</td>
+                        <td>${d.ship_type}</td>
+                        <td>${d.capacity}</td>
+                        <td>${d.operator_name}</td>
+                        <td>${d.status}</td>
+                        <td><button onclick="deleteRecord('ships', ${d.ship_id})" class="btn-danger">Delete</button></td>
+                    </tr>
+                `).join('');
+            } else if(section === 'schedules') {
+                tbody.innerHTML = data.map(d => `
+                    <tr>
+                        <td>${d.schedule_id}</td>
+                        <td>${d.ship_name}</td>
+                        <td>${d.source_port} - ${d.destination_port}</td>
+                        <td>${d.departure_date} ${d.departure_time}</td>
+                        <td>$${d.fare}</td>
+                        <td><button onclick="deleteRecord('schedules', ${d.schedule_id})" class="btn-danger">Delete</button></td>
+                    </tr>
+                `).join('');
+            } else if(section === 'bookings') {
+                tbody.innerHTML = data.map(d => `
+                    <tr>
+                        <td>${d.booking_id}</td>
+                        <td>${d.passenger_name}</td>
+                        <td>${d.ship_name}</td>
+                        <td>${d.journey_date}</td>
+                        <td>$${d.total_amount}</td>
+                        <td>${d.booking_status}</td>
+                        <td><button onclick="deleteRecord('bookings', ${d.booking_id})" class="btn-danger">Delete</button></td>
+                    </tr>
+                `).join('');
+            } else if(section === 'payments') {
+                tbody.innerHTML = data.map(d => `
+                    <tr>
+                        <td>${d.payment_id}</td>
+                        <td>${d.booking_id}</td>
+                        <td>${d.passenger_name}</td>
+                        <td>$${d.amount}</td>
+                        <td>${d.payment_method}</td>
+                        <td>${d.payment_status}</td>
+                        <td>${d.transaction_id}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        async function deleteRecord(endpoint, id) {
+            if(confirm('Are you sure you want to delete this record?')) {
+                await deleteAny(endpoint, id);
+                loadData(endpoint);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData('passengers');
+        });
+    </script>
+</body>
+</html>

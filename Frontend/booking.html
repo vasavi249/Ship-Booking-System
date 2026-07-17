@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - Ship Booking System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">🚢 ShipBooker</a>
+        <ul class="nav-links" id="nav-links"></ul>
+    </nav>
+
+    <div id="alertBox" class="alert" style="display:none; position:absolute; top:80px; left:50%; transform:translateX(-50%); z-index:1000; min-width:300px; text-align:center;"></div>
+
+    <div class="glass-container glass-container-large" style="margin-top: 2rem;">
+        <h2 style="color: #ffffff; margin-bottom: 1.5rem;">Booking Confirmation</h2>
+        
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;">
+                <h3>Journey Details</h3>
+                <div style="background: var(--bg-secondary); border: 1px solid var(--glass-border); padding: 1rem; border-radius: 8px; margin-top: 1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                    <p><strong>Ship:</strong> <span id="b_ship" style="color: #ffffff;"></span></p>
+                    <p><strong>Route:</strong> <span id="b_route" style="color: #ffffff;"></span></p>
+                    <p><strong>Date:</strong> <span id="b_date" style="color: #ffffff;"></span></p>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Passenger Details</h3>
+                <div style="background: var(--bg-secondary); border: 1px solid var(--glass-border); padding: 1rem; border-radius: 8px; margin-top: 1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                    <p><strong>Name:</strong> <span id="b_name" style="color: #ffffff;"></span></p>
+                    <p><strong>Email:</strong> <span id="b_email" style="color: #ffffff;"></span></p>
+                </div>
+            </div>
+
+            <div style="flex: 1; min-width: 300px;">
+                <h3>Cabin Selection</h3>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label>Select Cabin Type</label>
+                    <select id="cabin_type" class="form-control" onchange="updateTotal()">
+                        <option value="Standard" data-multiplier="1">Standard (1x Fare)</option>
+                        <option value="Deluxe" data-multiplier="1.5">Deluxe (1.5x Fare)</option>
+                        <option value="Suite" data-multiplier="2">Suite (2x Fare)</option>
+                    </select>
+                </div>
+
+                <div style="background: var(--bg-secondary); border: 1px solid var(--glass-border); color: white; padding: 1.5rem; border-radius: 8px; margin-top: 2rem; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                    <h3 style="color: var(--primary);">Total Amount</h3>
+                    <h2 id="total_amount" style="font-size: 2.5rem; margin: 1rem 0; color: #ffffff;">₹0.00</h2>
+                    <button onclick="confirmBooking()" class="glow-btn" style="width: 100%; border: none;">Confirm & Pay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="margin-top: auto;">
+        <p>&copy; 2026 Ship Booking System. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        let baseFare = 0;
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            const user = getCurrentUser();
+            const pending = JSON.parse(sessionStorage.getItem('pendingBooking'));
+            
+            if(!pending) {
+                window.location.href = 'ships.html';
+                return;
+            }
+
+            document.getElementById('b_ship').textContent = pending.ship_name;
+            document.getElementById('b_route').textContent = `${pending.source_port} to ${pending.destination_port}`;
+            document.getElementById('b_date').textContent = pending.journey_date;
+            
+            document.getElementById('b_name').textContent = user.full_name;
+            document.getElementById('b_email').textContent = user.email;
+
+            baseFare = parseFloat(pending.fare);
+            updateTotal();
+        });
+
+        function updateTotal() {
+            const select = document.getElementById('cabin_type');
+            const multiplier = parseFloat(select.options[select.selectedIndex].dataset.multiplier);
+            const total = baseFare * multiplier;
+            document.getElementById('total_amount').textContent = `₹${total.toFixed(2)}`;
+        }
+
+        function confirmBooking() {
+            const user = getCurrentUser();
+            const pending = JSON.parse(sessionStorage.getItem('pendingBooking'));
+            const select = document.getElementById('cabin_type');
+            
+            const multiplier = parseFloat(select.options[select.selectedIndex].dataset.multiplier);
+            const total = (baseFare * multiplier).toFixed(2);
+
+            const bookingData = {
+                passenger_name: user.full_name,
+                ship_name: pending.ship_name,
+                cabin_type: select.value,
+                journey_date: pending.journey_date,
+                source_port: pending.source_port,
+                destination_port: pending.destination_port,
+                total_amount: total,
+                booking_status: 'Pending Payment'
+            };
+
+            createBooking(bookingData);
+        }
+    </script>
+</body>
+</html>

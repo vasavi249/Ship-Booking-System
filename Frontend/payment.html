@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Ship Booking System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">🚢 ShipBooker</a>
+        <ul class="nav-links" id="nav-links"></ul>
+    </nav>
+
+    <div id="alertBox" class="alert" style="display:none; position:absolute; top:80px; left:50%; transform:translateX(-50%); z-index:1000; min-width:300px; text-align:center;"></div>
+
+    <div class="glass-container" style="margin-top: 5rem;">
+        <h2 style="text-align: center; color: #ffffff; margin-bottom: 2rem;">Payment Gateway</h2>
+        
+        <div style="background: var(--bg-secondary); border: 1px solid var(--glass-border); padding: 1rem; border-radius: 8px; margin-bottom: 2rem; text-align: center; color: #ffffff;">
+            <p>Amount to Pay</p>
+            <h3 id="pay_amount" style="font-size: 2rem; color: var(--primary);">₹0.00</h3>
+        </div>
+
+        <form id="paymentForm">
+            <div class="form-group">
+                <label>Payment Method</label>
+                <select id="payment_method" class="form-control" required>
+                    <option value="">Select Method</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Debit Card">Debit Card</option>
+                    <option value="UPI">UPI</option>
+                    <option value="Net Banking">Net Banking</option>
+                    <option value="Wallet">Wallet</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="details-group">
+                <label id="details-label">Card/Wallet Details (Mock)</label>
+                <input type="text" id="details-input" class="form-control" placeholder="Enter details..." required>
+            </div>
+
+            <!-- Hidden QR Code Section for UPI -->
+            <div id="upi-scanner" style="display: none; text-align: center; margin-bottom: 2rem;">
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">Scan the QR code with any UPI app to pay</p>
+                <div style="background: white; padding: 1rem; border-radius: 12px; display: inline-block;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=mock@upi&pn=ShipBooking" alt="UPI QR Code" style="width: 200px; height: 200px;">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="background: #28a745;">Pay Now</button>
+        </form>
+    </div>
+
+    <footer style="margin-top: auto;">
+        <p>&copy; 2026 Ship Booking System. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            const currentBooking = JSON.parse(localStorage.getItem('currentBooking'));
+            if(!currentBooking) {
+                window.location.href = 'index.html';
+                return;
+            }
+            document.getElementById('pay_amount').textContent = `₹${currentBooking.total_amount}`;
+        });
+
+        document.getElementById('payment_method').addEventListener('change', (e) => {
+            const method = e.target.value;
+            const detailsGroup = document.getElementById('details-group');
+            const detailsLabel = document.getElementById('details-label');
+            const detailsInput = document.getElementById('details-input');
+            const upiScanner = document.getElementById('upi-scanner');
+
+            if (method === 'UPI') {
+                detailsGroup.style.display = 'none';
+                detailsInput.removeAttribute('required');
+                upiScanner.style.display = 'block';
+            } else {
+                upiScanner.style.display = 'none';
+                detailsGroup.style.display = 'block';
+                detailsInput.setAttribute('required', 'true');
+                
+                if (method === 'Credit Card' || method === 'Debit Card') {
+                    detailsLabel.textContent = 'Card Number';
+                    detailsInput.placeholder = '1234 5678 1234 5678';
+                } else if (method === 'Net Banking') {
+                    detailsLabel.textContent = 'Bank Name / User ID';
+                    detailsInput.placeholder = 'Enter Bank details';
+                } else {
+                    detailsLabel.textContent = 'Details';
+                    detailsInput.placeholder = 'Enter details...';
+                }
+            }
+        });
+
+        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const currentBooking = JSON.parse(localStorage.getItem('currentBooking'));
+            const user = getCurrentUser();
+            const method = document.getElementById('payment_method').value;
+            
+            // Generate automatic transaction ID
+            const txId = 'TXN' + Math.floor(Math.random() * 1000000000);
+
+            const paymentData = {
+                booking_id: currentBooking.id,
+                passenger_name: user.full_name,
+                amount: currentBooking.total_amount,
+                payment_method: method,
+                payment_status: 'Success',
+                transaction_id: txId
+            };
+
+            // Before payment, we might want to update booking status to Confirmed
+            // But since this is a simple flow, we assume payment success.
+            createPayment(paymentData);
+            localStorage.removeItem('currentBooking');
+            sessionStorage.removeItem('pendingBooking');
+        });
+    </script>
+</body>
+</html>

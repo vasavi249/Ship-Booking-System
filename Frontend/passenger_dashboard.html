@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Ship Booking System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">🚢 ShipBooker</a>
+        <ul class="nav-links" id="nav-links"></ul>
+    </nav>
+
+    <section style="padding: 2rem 5%;">
+        <div class="glass-container glass-container-large" style="max-width: 1200px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="color: #ffffff;">Welcome, <span id="dash_name">Passenger</span>!</h2>
+                <a href="booking_history.html" class="btn-primary" style="text-decoration:none;">View Full History</a>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="stat_total">0</h3>
+                    <p>Total Bookings</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="stat_upcoming">0</h3>
+                    <p>Upcoming Trips</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                    <h3 id="stat_completed">0</h3>
+                    <p>Completed Trips</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #17a2b8, #117a8b);">
+                    <h3 id="stat_payments">₹0</h3>
+                    <p>Total Spent</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1rem;">Recent Upcoming Trips</h3>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Ship</th>
+                            <th>Route</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-list">
+                        <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer style="margin-top: auto;">
+        <p>&copy; 2026 Ship Booking System. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            checkAuth();
+            const user = getCurrentUser();
+            document.getElementById('dash_name').textContent = user.full_name;
+
+            const bookings = await fetchAny('bookings');
+            const myBookings = bookings.filter(b => b.passenger_name === user.full_name);
+            
+            // Calculate stats
+            document.getElementById('stat_total').textContent = myBookings.length;
+            
+            const today = new Date().toISOString().split('T')[0];
+            const upcoming = myBookings.filter(b => b.journey_date >= today);
+            const completed = myBookings.filter(b => b.journey_date < today);
+            
+            document.getElementById('stat_upcoming').textContent = upcoming.length;
+            document.getElementById('stat_completed').textContent = completed.length;
+            
+            const totalSpent = myBookings.reduce((sum, b) => sum + parseFloat(b.total_amount), 0);
+            document.getElementById('stat_payments').textContent = `₹${totalSpent.toFixed(2)}`;
+
+            // Populate recent list
+            const list = document.getElementById('recent-list');
+            if(upcoming.length === 0) {
+                list.innerHTML = '<tr><td colspan="5" style="text-align:center;">No upcoming trips.</td></tr>';
+            } else {
+                list.innerHTML = upcoming.slice(0, 5).map(b => `
+                    <tr>
+                        <td>#${b.booking_id}</td>
+                        <td>${b.ship_name}</td>
+                        <td>${b.source_port} - ${b.destination_port}</td>
+                        <td>${b.journey_date}</td>
+                        <td><span style="background: ${b.booking_status==='Confirmed' ? '#d4edda' : '#fff3cd'}; color: #000000; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 5px; font-size: 0.9rem;">${b.booking_status}</span></td>
+                    </tr>
+                `).join('');
+            }
+        });
+    </script>
+</body>
+</html>

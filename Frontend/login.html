@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ship Booking System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">🚢 ShipBooker</a>
+        <ul class="nav-links" id="nav-links"></ul>
+    </nav>
+
+    <div id="alertBox" class="alert" style="display:none; position:absolute; top:80px; left:50%; transform:translateX(-50%); z-index:1000; min-width:300px; text-align:center;"></div>
+
+    <div class="glass-container" style="margin-top: 5rem;">
+        <h2 style="text-align: center; color: var(--secondary); margin-bottom: 2rem;">Passenger Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn-primary">Login</button>
+            <p style="text-align: center; margin-top: 1rem;">Don't have an account? <a href="register.html" style="color: var(--primary);">Register here</a></p>
+            <p style="text-align: center; margin-top: 1rem;"><a href="admin_dashboard.html" style="color: var(--accent);">Admin Dashboard</a></p>
+        </form>
+    </div>
+
+    <footer style="margin-top: auto;">
+        <p>&copy; 2026 Ship Booking System. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            login(email, password);
+        });
+    </script>
+</body>
+</html>

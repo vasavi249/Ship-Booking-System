@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Ships - Ship Booking System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">🚢 ShipBooker</a>
+        <ul class="nav-links" id="nav-links"></ul>
+    </nav>
+
+    <section style="padding: 4rem 5%; text-align: center;">
+        <h2 style="font-size: 2.5rem; color: #ffffff; margin-bottom: 2rem;">Explore Our Fleet</h2>
+        
+        <div id="ships-grid" class="grid-container">
+            <!-- Ships dynamically populated here -->
+        </div>
+    </section>
+
+    <footer style="margin-top: auto;">
+        <p>&copy; 2026 Ship Booking System. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const ships = await fetchShips();
+            const grid = document.getElementById('ships-grid');
+            
+            if(ships.length === 0) {
+                grid.innerHTML = '<p>No ships available at the moment.</p>';
+                return;
+            }
+
+            // Using direct Unsplash static URLs for 16 beautiful clear ships
+            const images = [
+                'https://images.unsplash.com/photo-1548574505-12caf0ce047b?auto=format&fit=crop&w=800&q=80', // cruise ship
+                'https://images.unsplash.com/photo-1599640842225-85d111c60e6b?auto=format&fit=crop&w=800&q=80', // mega ship
+                'https://images.unsplash.com/photo-1560601445-9343be977f68?auto=format&fit=crop&w=800&q=80', // yacht
+                'https://images.unsplash.com/photo-1510006851064-984408dc6f6d?auto=format&fit=crop&w=800&q=80', // ocean liner
+                'https://images.unsplash.com/photo-1580544521452-f47a61d152a5?auto=format&fit=crop&w=800&q=80', // sea
+                'https://images.unsplash.com/photo-1626021677332-9b2210a45558?auto=format&fit=crop&w=800&q=80', // luxury
+                'https://images.unsplash.com/photo-1562234038-04f7b6b1580f?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1551893979-994ec32fca25?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1501594907296-3259df92f699?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1605281317010-a6ddb9b1836a?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1612260655452-fdb0cbf17c7d?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1541086095944-f4b5c8f1eb34?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1612089405626-d97151e06fa5?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1604909117621-0c58e11a3db6?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1612089405615-5e608035ed94?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1510006851064-984408dc6f6d?auto=format&fit=crop&w=800&q=80'
+            ];
+
+            grid.innerHTML = ships.map((ship, index) => `
+                <div class="card premium-card">
+                    <div class="card-img-wrapper">
+                        <span class="badge ${index % 2 === 0 ? 'badge-tropical' : 'badge-expedition'}">${ship.ship_type}</span>
+                        <img src="${images[index % images.length]}" alt="${ship.ship_name}" onerror="this.onerror=null; this.src='https://picsum.photos/id/${10 + index}/800/600';">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">${ship.ship_name}</h3>
+                        <div class="card-meta">
+                            <span class="meta-item">Capacity: ${ship.capacity}</span>
+                        </div>
+                        <p class="card-desc">Operated by ${ship.operator_name}</p>
+                        <div class="card-footer">
+                            <span class="price" style="font-size: 1rem; color: var(--text-muted);">${ship.status}</span>
+                            <button onclick="window.location.href='ship_details.html?ship_name=${encodeURIComponent(ship.ship_name)}'" class="btn-primary small-btn">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        });
+    </script>
+</body>
+</html>

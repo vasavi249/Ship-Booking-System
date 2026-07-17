@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking History - Ship Booking System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">🚢 ShipBooker</a>
+        <ul class="nav-links" id="nav-links"></ul>
+    </nav>
+
+    <section style="padding: 2rem 5%;">
+        <div class="glass-container glass-container-large" style="max-width: 1200px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="color: #ffffff;">My Booking History</h2>
+                <a href="passenger_dashboard.html" class="btn-secondary" style="text-decoration:none;">Back to Dashboard</a>
+            </div>
+            
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Ship</th>
+                            <th>Route</th>
+                            <th>Date</th>
+                            <th>Cabin</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-list">
+                        <tr><td colspan="7" style="text-align:center;">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer style="margin-top: auto;">
+        <p>&copy; 2026 Ship Booking System. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            checkAuth();
+            const user = getCurrentUser();
+            const bookings = await fetchAny('bookings');
+            
+            // Filter by user's full name (since we use it as foreign key mock)
+            const myBookings = bookings.filter(b => b.passenger_name === user.full_name);
+            const list = document.getElementById('history-list');
+
+            if(myBookings.length === 0) {
+                list.innerHTML = '<tr><td colspan="7" style="text-align:center;">No bookings found.</td></tr>';
+            } else {
+                list.innerHTML = myBookings.map(b => `
+                    <tr>
+                        <td>#${b.booking_id}</td>
+                        <td>${b.ship_name}</td>
+                        <td>${b.source_port} - ${b.destination_port}</td>
+                        <td>${b.journey_date}</td>
+                        <td>${b.cabin_type}</td>
+                        <td>₹${b.total_amount}</td>
+                        <td><span style="background: ${b.booking_status==='Confirmed' ? '#d4edda' : '#fff3cd'}; color: #000000; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 5px; font-size: 0.9rem;">${b.booking_status}</span></td>
+                    </tr>
+                `).join('');
+            }
+        });
+    </script>
+</body>
+</html>

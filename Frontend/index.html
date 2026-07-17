@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ship Booking System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">🚢 ShipBooker</a>
+        <ul class="nav-links" id="nav-links">
+            <!-- Populated by script.js -->
+        </ul>
+    </nav>
+
+    <div id="alertBox" class="alert" style="display:none; position:absolute; top:80px; left:50%; transform:translateX(-50%); z-index:1000; min-width:300px; text-align:center;"></div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Experience Luxury <span class="highlight">on the Seas</span></h1>
+            <p>Book your perfect cruise vacation with our premium selection of ships and seamless booking experience. Your next great adventure awaits.</p>
+            <div class="glass-container search-box">
+                <form onsubmit="event.preventDefault(); window.location.href='ships.html';">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Departure Port">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Destination Port">
+                    </div>
+                    <div class="input-group">
+                        <input type="date" class="form-control">
+                    </div>
+                    <button type="submit" class="btn-primary glow-btn">Explore Now</button>
+                </form>
+            </div>
+        </div>
+        <div class="wave">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.5,193,105.7,238.16,95.7,280.9,71.5,321.39,56.44Z" fill="#0b1120"></path>
+            </svg>
+        </div>
+    </section>
+
+    <section class="featured-section">
+        <div class="section-header">
+            <h2>Featured <span class="highlight">Cruises</span></h2>
+            <p class="section-subtitle">Discover our most popular and highly-rated journeys.</p>
+        </div>
+        <div class="grid-container">
+            <div class="card premium-card">
+                <div class="card-img-wrapper">
+                    <span class="badge">Bestseller</span>
+                    <img src="https://images.unsplash.com/photo-1548574505-12caf0ce047b?auto=format&fit=crop&w=800&q=80" alt="Symphony of the Seas" onerror="this.onerror=null; this.src='https://picsum.photos/id/10/800/600';">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Symphony of the Seas</h3>
+                    <div class="card-meta">
+                        <span class="meta-item">⭐ 4.9</span>
+                        <span class="meta-item">Luxury Cruiser</span>
+                    </div>
+                    <p class="card-desc">Experience 5-star amenities on the open ocean with our flagship liner.</p>
+                    <div class="card-footer">
+                        <span class="price">From ₹40,000</span>
+                        <a href="ship_details.html?ship_name=Symphony%20of%20the%20Seas" class="btn-primary small-btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card premium-card">
+                <div class="card-img-wrapper">
+                    <span class="badge badge-tropical">Tropical</span>
+                    <img src="https://images.unsplash.com/photo-1599640842225-85d111c60e6b?auto=format&fit=crop&w=800&q=80" alt="MS Freedom" onerror="this.onerror=null; this.src='https://picsum.photos/id/11/800/600';">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">MS Freedom</h3>
+                    <div class="card-meta">
+                        <span class="meta-item">⭐ 4.7</span>
+                        <span class="meta-item">Ocean Liner</span>
+                    </div>
+                    <p class="card-desc">The perfect getaway for crystal clear waters and white sandy beaches.</p>
+                    <div class="card-footer">
+                        <span class="price">From ₹25,000</span>
+                        <a href="ship_details.html?ship_name=MS%20Freedom" class="btn-primary small-btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card premium-card">
+                <div class="card-img-wrapper">
+                    <span class="badge badge-expedition">Expedition</span>
+                    <img src="https://images.unsplash.com/photo-1560601445-9343be977f68?auto=format&fit=crop&w=800&q=80" alt="AIDAprima" onerror="this.onerror=null; this.src='https://picsum.photos/id/12/800/600';">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">AIDAprima</h3>
+                    <div class="card-meta">
+                        <span class="meta-item">⭐ 4.8</span>
+                        <span class="meta-item">Adventure</span>
+                    </div>
+                    <p class="card-desc">Brave the breathtaking fjords and majestic glaciers in ultimate comfort.</p>
+                    <div class="card-footer">
+                        <span class="price">From ₹35,000</span>
+                        <a href="ship_details.html?ship_name=AIDAprima" class="btn-primary small-btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card premium-card">
+                <div class="card-img-wrapper">
+                    <span class="badge">Luxury</span>
+                    <img src="https://images.unsplash.com/photo-1510006851064-984408dc6f6d?auto=format&fit=crop&w=800&q=80" alt="Genting Dream" onerror="this.onerror=null; this.src='https://picsum.photos/id/13/800/600';">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Genting Dream</h3>
+                    <div class="card-meta">
+                        <span class="meta-item">⭐ 4.9</span>
+                        <span class="meta-item">Mega Cruiser</span>
+                    </div>
+                    <p class="card-desc">Explore the rich European coasts with unparalleled elegance and style.</p>
+                    <div class="card-footer">
+                        <span class="price">From ₹45,000</span>
+                        <a href="ship_details.html?ship_name=Genting%20Dream" class="btn-primary small-btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card premium-card">
+                <div class="card-img-wrapper">
+                    <span class="badge badge-tropical">Mega Ship</span>
+                    <img src="https://images.unsplash.com/photo-1580544521452-f47a61d152a5?auto=format&fit=crop&w=800&q=80" alt="Silver Whisper" onerror="this.onerror=null; this.src='https://picsum.photos/id/14/800/600';">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Silver Whisper</h3>
+                    <div class="card-meta">
+                        <span class="meta-item">⭐ 4.6</span>
+                        <span class="meta-item">Luxury Yacht</span>
+                    </div>
+                    <p class="card-desc">A mega cruiser designed for the ultimate family and group journeys.</p>
+                    <div class="card-footer">
+                        <span class="price">From ₹30,000</span>
+                        <a href="ship_details.html?ship_name=Silver%20Whisper" class="btn-primary small-btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card premium-card">
+                <div class="card-img-wrapper">
+                    <span class="badge badge-expedition">Expedition</span>
+                    <img src="https://images.unsplash.com/photo-1626021677332-9b2210a45558?auto=format&fit=crop&w=800&q=80" alt="Seven Seas Explorer" onerror="this.onerror=null; this.src='https://picsum.photos/id/15/800/600';">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Seven Seas Explorer</h3>
+                    <div class="card-meta">
+                        <span class="meta-item">⭐ 4.9</span>
+                        <span class="meta-item">Luxury Cruiser</span>
+                    </div>
+                    <p class="card-desc">Discover the breathtaking glaciers and wildlife of the north.</p>
+                    <div class="card-footer">
+                        <span class="price">From ₹50,000</span>
+                        <a href="ship_details.html?ship_name=Seven%20Seas%20Explorer" class="btn-primary small-btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="benefits-section">
+        <div class="section-header">
+            <h2>Why Choose <span class="highlight">ShipBooker</span></h2>
+            <p class="section-subtitle">Experience the ultimate in maritime luxury and comfort.</p>
+        </div>
+        <div class="grid-container">
+            <div class="stat-card">
+                <h3>🌊</h3>
+                <h4>Breathtaking Routes</h4>
+                <p style="color: var(--text-muted); margin-top: 1rem;">Sail to over 50+ exotic destinations worldwide.</p>
+            </div>
+            <div class="stat-card">
+                <h3>⭐</h3>
+                <h4>5-Star Luxury</h4>
+                <p style="color: var(--text-muted); margin-top: 1rem;">World-class dining, spas, and entertainment on board.</p>
+            </div>
+            <div class="stat-card">
+                <h3>🛡️</h3>
+                <h4>Safe & Secure</h4>
+                <p style="color: var(--text-muted); margin-top: 1rem;">Industry-leading safety protocols and 24/7 medical staff.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" style="padding: 5rem 5%; background: var(--bg-main);">
+        <div class="section-header">
+            <h2>What Our <span class="highlight">Clients Say</span></h2>
+        </div>
+        <div class="grid-container">
+            <div class="glass-container" style="margin: 0;">
+                <p style="font-style: italic; color: var(--text-muted);">"The most incredible vacation of my life. The Mediterranean Princess was pure luxury from start to finish."</p>
+                <div style="margin-top: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold;">JD</div>
+                    <div>
+                        <h4 style="color: white;">John Doe</h4>
+                        <span style="color: var(--accent); font-size: 0.8rem;">⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-container" style="margin: 0;">
+                <p style="font-style: italic; color: var(--text-muted);">"Booking was seamless and the Nordic Explorer exceeded all our expectations. Highly recommended!"</p>
+                <div style="margin-top: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: bold;">AS</div>
+                    <div>
+                        <h4 style="color: white;">Alice Smith</h4>
+                        <span style="color: var(--accent); font-size: 0.8rem;">⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Ship Booking System. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
