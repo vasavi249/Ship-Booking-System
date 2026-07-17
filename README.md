@@ -158,3 +158,13 @@ To submit this project via GitHub:
 ## Author
 Senior Full Stack Django Developer
 #
+
+<img width="1901" height="992" alt="Screenshot 2026-07-17 152646" src="https://github.com/user-attachments/assets/d7c0a863-b557-44e9-b78e-6400526c3f59" />
+<img width="1868" height="997" alt="Screenshot 2026-07-17 152611" src="https://github.com/user-attachments/assets/55272034-81ff-4754-8eb6-e111b9747055" />
+<img width="1872" height="1042" alt="Screenshot 2026-07-17 152453" src="https://github.com/user-attachments/assets/cfa5e78a-cfe5-4ddb-a71c-8fc033ec5f7e" />
+<img width="1887" height="977" alt="Screenshot 2026-07-17 152326" src="https://github.com/user-attachments/assets/4e2c1c94-2e17-467c-9162-8dbf160b371c" />
+<img width="1907" height="1037" alt="Screenshot 2026-07-17 160934" src="https://github.com/user-attachments/assets/c6cda962-bf29-4fdb-96b9-8b886bf76049" />
+<img width="1865" height="893" alt="Screenshot 2026-07-17 154250" src="https://github.com/user-attachments/assets/d596e06c-fee7-41ed-bd00-d222dc8dfbf3" />
+<img width="1871" height="893" alt="Screenshot 2026-07-17 154231" src="https://github.com/user-attachments/assets/bfb1ab85-0ef8-423c-bc28-9342f5265666" />
+<img width="1847" height="876" alt="Screenshot 2026-07-17 154210" src="https://github.com/user-attachments/assets/128979ce-5779-48df-95e5-c488ad2ba69d" />
+<img width="1877" height="893" alt="Screenshot 2026-07-17 154128" src="https://github.com/user-attachments/assets/f379ca21-514e-493b-964d-9e14f416bdc3" />
